@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<SplitPane dividerPositions="0.3681948424068768" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.student_management.Controller">
+    <items>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="195.0">
+            <children>
+                <VBox prefHeight="551.0" prefWidth="223.0">
+                    <children>
+                        <AnchorPane prefHeight="56.0" prefWidth="176.0">
+                            <children>
+                                <Label layoutX="35.0" layoutY="16.0" text="Student Management">
+                                    <font>
+                                        <Font size="16.0" />
+                                    </font>
+                                </Label>
+                            </children>
+                        </AnchorPane>
+                        <AnchorPane prefHeight="62.0" prefWidth="212.0">
+                            <children>
+                                <TextField fx:id="name_input" layoutX="21.0" layoutY="19.0" prefHeight="25.0" prefWidth="181.0" promptText="Name" />
+                            </children>
+                        </AnchorPane>
+                        <AnchorPane prefHeight="62.0" prefWidth="212.0">
+                            <children>
+                                <TextField fx:id="age_input" layoutX="21.0" layoutY="19.0" prefHeight="25.0" prefWidth="181.0" promptText="Age" />
+                            </children>
+                        </AnchorPane>
+                        <AnchorPane prefHeight="62.0" prefWidth="176.0">
+                            <children>
+                                <Label layoutX="14.0" layoutY="23.0" />
+                        <ChoiceBox fx:id="code_input" layoutX="21.0" layoutY="19.0" prefHeight="25.0" prefWidth="181.0" />
+                            </children>
+                        </AnchorPane>
+                        <AnchorPane prefHeight="62.0" prefWidth="176.0">
+                            <children>
+                                <TextField fx:id="gpa_input" layoutX="21.0" layoutY="14.0" prefHeight="25.0" prefWidth="181.0" promptText="GPA" />
+                            </children>
+                        </AnchorPane>
+                        <AnchorPane prefHeight="62.0" prefWidth="176.0">
+                            <children>
+                                <Button fx:id="add_button" contentDisplay="CENTER" layoutX="26.0" layoutY="36.0" mnemonicParsing="false" onAction="#onAddButtonClick" prefHeight="25.0" prefWidth="85.0" text="Add" textAlignment="CENTER" />
+                        <Button fx:id="edit_button" contentDisplay="CENTER" layoutX="124.0" layoutY="36.0" mnemonicParsing="false" onAction="#editStudent" prefHeight="25.0" prefWidth="85.0" text="Edit" textAlignment="CENTER" />
+                            </children>
+                        </AnchorPane>
+                    </children>
+                </VBox>
+            </children></AnchorPane>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="524.0">
+            <children>
+                <TableView fx:id="table" layoutX="38.0" layoutY="68.0" onMouseClicked="#getSelected" prefHeight="309.0" prefWidth="376.0">
+                    <columns>
+                        <TableColumn fx:id="id_col" prefWidth="75.0" text="ID" />
+                        <TableColumn fx:id="name_col" prefWidth="91.0" text="Name" />
+                        <TableColumn fx:id="age_col" prefWidth="59.0" text="Age" />
+                        <TableColumn fx:id="code_col" prefWidth="90.0" text="Program Code" />
+                        <TableColumn fx:id="gpa_col" prefWidth="60.0" text="GPA (0 to 5.00)" />
+                    </columns>
+                </TableView>
+                <Button fx:id="delete_button" contentDisplay="CENTER" layoutX="310.0" layoutY="397.0" mnemonicParsing="false" onAction="#deleteStudent" prefHeight="25.0" prefWidth="104.0" text="Delete" textAlignment="CENTER" />
+            <TextField fx:id="search_bar" layoutX="245.0" layoutY="24.0" onKeyReleased="#searchStudent" prefHeight="25.0" prefWidth="169.0" promptText="Search name" />
+            </children></AnchorPane>
+    </items>
+</SplitPane>

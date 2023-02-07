@@ -44,7 +44,7 @@
                         </AnchorPane>
                         <AnchorPane prefHeight="62.0" prefWidth="176.0">
                             <children>
-                                <TextField fx:id="gpa_input" layoutX="21.0" layoutY="14.0" prefHeight="25.0" prefWidth="181.0" promptText="GPA" />
+                                <TextField fx:id="gpa_input" layoutX="21.0" layoutY="14.0" prefHeight="25.0" prefWidth="181.0" promptText="GPA (0 to 5.00)" />
                             </children>
                         </AnchorPane>
                         <AnchorPane prefHeight="62.0" prefWidth="176.0">
@@ -64,7 +64,7 @@
                         <TableColumn fx:id="name_col" prefWidth="91.0" text="Name" />
                         <TableColumn fx:id="age_col" prefWidth="59.0" text="Age" />
                         <TableColumn fx:id="code_col" prefWidth="90.0" text="Program Code" />
-                        <TableColumn fx:id="gpa_col" prefWidth="60.0" text="GPA (0 to 5.00)" />
+                        <TableColumn fx:id="gpa_col" prefWidth="60.0" text="GPA" />
                     </columns>
                 </TableView>
                 <Button fx:id="delete_button" contentDisplay="CENTER" layoutX="310.0" layoutY="397.0" mnemonicParsing="false" onAction="#deleteStudent" prefHeight="25.0" prefWidth="104.0" text="Delete" textAlignment="CENTER" />

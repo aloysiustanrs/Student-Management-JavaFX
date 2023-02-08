@@ -12,7 +12,6 @@ import javax.swing.*;
 import java.net.URL;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Random;
 import java.util.ResourceBundle;
 
 public class Controller implements Initializable{
@@ -57,10 +56,6 @@ public class Controller implements Initializable{
         currentId = id_col.getCellData(currentSelectedIndex).toString();
 
 
-    }
-    private int generateRandomId(){
-        Random rand = new Random();
-        return rand.nextInt(10000);
     }
     private final ArrayList<Integer> idList = new ArrayList<>();
     public ObservableList<Student> getStudents() {
@@ -117,13 +112,10 @@ public class Controller implements Initializable{
             }
 
 //          Execute query
-            String addUserQuery = "INSERT INTO students.student_details (id,name,age,programCode,gpa) values(?,?,?,?,?)";
+            String addUserQuery = "INSERT INTO students.student_details (name,age,programCode,gpa) values(?,?,?,?)";
             try{
                 PreparedStatement addUserPst = con.prepareStatement(addUserQuery);
-                int currRandomId = generateRandomId();
-                while (idList.contains(currRandomId)){
-                    currRandomId = generateRandomId();
-                }
+
 
                 String name_add = name_input.getText();
                 String age_add = age_input.getText();
@@ -139,11 +131,10 @@ public class Controller implements Initializable{
                 }
 
 
-                addUserPst.setString(1,String.valueOf(currRandomId));
-                addUserPst.setString(2,name_add);
-                addUserPst.setString(3,age_add);
-                addUserPst.setString(4,code_add);
-                addUserPst.setString(5,gpa_add);
+                addUserPst.setString(1,name_add);
+                addUserPst.setString(2,age_add);
+                addUserPst.setString(3,code_add);
+                addUserPst.setString(4,gpa_add);
                 addUserPst.execute();
 
                 updateTable();
@@ -179,6 +170,8 @@ public class Controller implements Initializable{
             return;
         }
 
+        currentId = String.valueOf(table.getSelectionModel().getSelectedIndex());
+        System.out.println(currentId);
 
 
         String editStudentQuery = "UPDATE students.student_details SET name=\""+ name_edit +"\",age=\""+ age_edit +"\",programCode = \""+ code_edit +"\",gpa =\"" +  gpa_edit +"\" WHERE id = \"" + currentId + "\"";

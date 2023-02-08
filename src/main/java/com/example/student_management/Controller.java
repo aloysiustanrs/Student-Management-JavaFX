@@ -44,10 +44,6 @@ public class Controller implements Initializable{
     private TextField search_bar;
 
     @FXML
-    protected void onAddButtonClick() {
-        addStudent();
-    }
-    @FXML
     void getSelected() {
         int currentSelectedIndex = table.getSelectionModel().getSelectedIndex();
         if (currentSelectedIndex <= -1) {
@@ -151,6 +147,7 @@ public class Controller implements Initializable{
                 addUserPst.execute();
 
                 updateTable();
+                clearInput();
 
                 JOptionPane.showMessageDialog(null,"Student added");
             }
@@ -189,6 +186,7 @@ public class Controller implements Initializable{
             PreparedStatement editStudentPst = con.prepareStatement(editStudentQuery);
             editStudentPst.execute();
             updateTable();
+            clearInput();
 
             JOptionPane.showMessageDialog(null, "Student edited");
         } catch (Exception e) {
@@ -230,6 +228,16 @@ public class Controller implements Initializable{
     }
 
 
+// primary key for ID
+
+    public void clearInput(){
+        //clear textbox after editing / adding
+        name_input.clear();
+        age_input.clear();
+        code_input.setValue("");
+        gpa_input.clear();
+
+    }
     public boolean checkInput(String name, int age, double gpa){
         //    Returns false when input is out of range or too many characters
         return name.length() <= 50 && age <= 100 && !(gpa > 5.00);

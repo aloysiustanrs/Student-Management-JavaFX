@@ -6,17 +6,22 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class Application extends javafx.application.Application {
+
     @Override
     public void start(Stage stage) throws IOException {
 
 
-        FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("student_management.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("login.fxml"));
 
         Scene scene = new Scene(fxmlLoader.load(), 700, 500);
 
         stage.setTitle("Student Management");
         stage.setScene(scene);
         stage.show();
+
+//        Create reference to mainStage from LoginController
+        LoginController controller = fxmlLoader.getController();
+        controller.setStage(stage);
 
 
     }

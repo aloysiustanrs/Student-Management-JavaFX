@@ -49,8 +49,8 @@
                         </AnchorPane>
                         <AnchorPane prefHeight="62.0" prefWidth="176.0">
                             <children>
-                                <Button fx:id="add_button" contentDisplay="CENTER" layoutX="26.0" layoutY="36.0" mnemonicParsing="false" onAction="#onAddButtonClick" prefHeight="25.0" prefWidth="85.0" text="Add" textAlignment="CENTER" />
-                        <Button fx:id="edit_button" contentDisplay="CENTER" layoutX="124.0" layoutY="36.0" mnemonicParsing="false" onAction="#editStudent" prefHeight="25.0" prefWidth="85.0" text="Edit" textAlignment="CENTER" />
+                                <Button contentDisplay="CENTER" layoutX="26.0" layoutY="36.0" mnemonicParsing="false" onAction="#addStudent" prefHeight="25.0" prefWidth="85.0" text="Add" textAlignment="CENTER" />
+                        <Button contentDisplay="CENTER" layoutX="124.0" layoutY="36.0" mnemonicParsing="false" onAction="#editStudent" prefHeight="25.0" prefWidth="85.0" text="Edit" textAlignment="CENTER" />
                             </children>
                         </AnchorPane>
                     </children>
@@ -67,7 +67,7 @@
                         <TableColumn fx:id="gpa_col" prefWidth="60.0" text="GPA" />
                     </columns>
                 </TableView>
-                <Button fx:id="delete_button" contentDisplay="CENTER" layoutX="310.0" layoutY="397.0" mnemonicParsing="false" onAction="#deleteStudent" prefHeight="25.0" prefWidth="104.0" text="Delete" textAlignment="CENTER" />
+                <Button contentDisplay="CENTER" layoutX="310.0" layoutY="397.0" mnemonicParsing="false" onAction="#deleteStudent" prefHeight="25.0" prefWidth="104.0" text="Delete" textAlignment="CENTER" />
             <TextField fx:id="search_bar" layoutX="245.0" layoutY="24.0" onKeyReleased="#searchStudent" prefHeight="25.0" prefWidth="169.0" promptText="Search name" />
             </children></AnchorPane>
     </items>

@@ -20,8 +20,12 @@ public class Application extends javafx.application.Application {
         stage.show();
 
 //        Create reference to mainStage from LoginController
-        LoginController controller = fxmlLoader.getController();
-        controller.setStage(stage);
+        LoginController loginController = fxmlLoader.getController();
+        loginController.setStage(stage);
+
+
+
+
 
 
     }

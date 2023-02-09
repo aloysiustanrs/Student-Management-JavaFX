@@ -15,10 +15,11 @@ public class LoginController {
     @FXML
     private TextField username_input;
 
-    private Stage mainStage;
+    public static Stage mainStage;
     public void setStage(Stage stage) {
         mainStage = stage;
     }
+
     public void loginCheck() throws Exception{
 
         String username_check = username_input.getText().trim();

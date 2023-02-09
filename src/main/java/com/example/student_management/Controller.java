@@ -4,7 +4,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
@@ -14,10 +17,11 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+import static com.example.student_management.LoginController.mainStage;
+
 public class Controller implements Initializable{
 
-    String currentId = "";
-
+//    FXML elements
     @FXML
     private TableView<Student> table;
     @FXML
@@ -42,6 +46,11 @@ public class Controller implements Initializable{
     @FXML
     private TextField search_bar;
 
+//    Variables
+    String currentId = "";
+
+
+    //    Functions
     @FXML
     void getSelected() {
         int currentSelectedIndex = table.getSelectionModel().getSelectedIndex();
@@ -57,6 +66,7 @@ public class Controller implements Initializable{
 
 
     }
+
     private final ArrayList<Integer> idList = new ArrayList<>();
     public ObservableList<Student> getStudents() {
 
@@ -104,8 +114,8 @@ public class Controller implements Initializable{
     public void addStudent() {
         try(Connection con = DBConnection.createConnection()) {
 
-            PreparedStatement getIdList = con.prepareStatement("SELECT id FROM students.student_details");
-            ResultSet rs = getIdList.executeQuery();
+            PreparedStatement getIdListPst = con.prepareStatement("SELECT id FROM students.student_details");
+            ResultSet rs = getIdListPst.executeQuery();
 
             while(rs.next()){
                 idList.add(rs.getInt("id"));
@@ -169,13 +179,19 @@ public class Controller implements Initializable{
                     "GPA <= 5.00");
             return;
         }
-
+//        get id from name
         currentId = String.valueOf(table.getSelectionModel().getSelectedIndex());
-        System.out.println(currentId);
 
-
-        String editStudentQuery = "UPDATE students.student_details SET name=\""+ name_edit +"\",age=\""+ age_edit +"\",programCode = \""+ code_edit +"\",gpa =\"" +  gpa_edit +"\" WHERE id = \"" + currentId + "\"";
         try (Connection con = DBConnection.createConnection()) {
+//            get current id of selected row
+            String getIdFromName = "SELECT * FROM students.student_details WHERE name=\"" + name_edit + "\"";
+            PreparedStatement getIdFromNamePst = con.prepareStatement(getIdFromName);
+            ResultSet rs = getIdFromNamePst.executeQuery();
+            rs.next();
+            currentId = String.valueOf(rs.getInt(1));
+
+//            update database based on textfield values
+            String editStudentQuery = "UPDATE students.student_details SET name=\""+ name_edit +"\",age=\""+ age_edit +"\",programCode = \""+ code_edit +"\",gpa =\"" +  gpa_edit +"\" WHERE id = \"" + currentId + "\"";
             PreparedStatement editStudentPst = con.prepareStatement(editStudentQuery);
             editStudentPst.execute();
             updateTable();
@@ -219,10 +235,6 @@ public class Controller implements Initializable{
         ObservableList<Student> list = getStudents();
         table.setItems(list);
     }
-
-
-// primary key for ID
-
     public void clearInput(){
         //clear textbox after editing / adding
         name_input.clear();
@@ -234,6 +246,15 @@ public class Controller implements Initializable{
     public boolean checkInput(String name, int age, double gpa){
         //    Returns false when input is out of range or too many characters
         return name.length() <= 50 && age <= 100 && !(gpa > 5.00);
+    }
+    public void logOut() throws Exception{
+        Parent root = FXMLLoader.load(getClass().getResource("login.fxml"));
+        Scene scene = new Scene(root, 700, 500);
+
+        mainStage.setScene(scene);
+        mainStage.show();
+
+
     }
 
     public void initialize(URL url, ResourceBundle rb) {

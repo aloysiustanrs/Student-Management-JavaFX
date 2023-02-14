@@ -179,18 +179,13 @@ public class Controller implements Initializable{
                     "GPA <= 5.00");
             return;
         }
-//        get id from name
-        currentId = String.valueOf(table.getSelectionModel().getSelectedIndex());
+
 
         try (Connection con = DBConnection.createConnection()) {
-//            get current id of selected row
-            String getIdFromName = "SELECT * FROM students.student_details WHERE name=\"" + name_edit + "\"";
-            PreparedStatement getIdFromNamePst = con.prepareStatement(getIdFromName);
-            ResultSet rs = getIdFromNamePst.executeQuery();
-            rs.next();
-            currentId = String.valueOf(rs.getInt(1));
+//          get id from selected row in table
+            currentId = String.valueOf(table.getSelectionModel().getSelectedItem().getId());
 
-//            update database based on textfield values
+//          update database based on text-field values
             String editStudentQuery = "UPDATE students.student_details SET name=\""+ name_edit +"\",age=\""+ age_edit +"\",programCode = \""+ code_edit +"\",gpa =\"" +  gpa_edit +"\" WHERE id = \"" + currentId + "\"";
             PreparedStatement editStudentPst = con.prepareStatement(editStudentQuery);
             editStudentPst.execute();

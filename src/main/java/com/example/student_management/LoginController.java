@@ -15,11 +15,20 @@ public class LoginController {
     @FXML
     private TextField username_input;
 
+
+    //Create a stage object
     public static Stage mainStage;
+
+    //Sets the stage object to the stage in 'Application.java'
     public void setStage(Stage stage) {
         mainStage = stage;
     }
 
+    /*
+        Check username & password
+        if wrong , output error message
+        if correct , change scene to 'student_management.fxml'
+     */
     public void loginCheck() throws Exception{
 
         String username_check = username_input.getText().trim();

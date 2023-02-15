@@ -14,12 +14,11 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javax.swing.*;
 import java.net.URL;
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import static com.example.student_management.LoginController.mainStage;
 
-public class Controller implements Initializable{
+public class MainController implements Initializable{
 
 //    FXML elements
     @FXML
@@ -46,11 +45,13 @@ public class Controller implements Initializable{
     @FXML
     private TextField search_bar;
 
-//    Variables
     String currentId = "";
 
 
-    //    Functions
+    /*
+        Gets the current selected index of the row in the table,
+        If nothing selected , return
+     */
     @FXML
     void getSelected() {
         int currentSelectedIndex = table.getSelectionModel().getSelectedIndex();
@@ -58,24 +59,29 @@ public class Controller implements Initializable{
             return;
         }
 
+        //Sets all the text-fields to the values of the selected row
         name_input.setText(name_col.getCellData(currentSelectedIndex));
         age_input.setText(age_col.getCellData(currentSelectedIndex).toString());
         code_input.setValue(code_col.getCellData(currentSelectedIndex));
         gpa_input.setText(gpa_col.getCellData(currentSelectedIndex).toString());
+
+        //Set 'currentId' to the unique ID of row from database
         currentId = id_col.getCellData(currentSelectedIndex).toString();
-
-
     }
 
-    private final ArrayList<Integer> idList = new ArrayList<>();
+    //Check input for values in range
+    public boolean checkInput(String name, int age, double gpa){
+        //    Returns false when input is out of range or too many characters
+        return name.length() <= 50 && age <= 100 && !(gpa > 5.00);
+    }
+
+    // Add all students from database into ObservableList and return it
     public ObservableList<Student> getStudents() {
 
         ObservableList<Student> data = FXCollections.observableArrayList();
 
         try(Connection con = DBConnection.createConnection()) {
 
-
-//          Execute query
             Statement st = con.createStatement();
             ResultSet rs = st.executeQuery("SELECT * FROM students.student_details");
 
@@ -90,8 +96,11 @@ public class Controller implements Initializable{
         return data;
 
     }
+
+
+    //Filter the table to only show students whose name contains text in the search bar
     public void searchStudent(){
-        //          Execute query
+        // Execute query
         String searchText = search_bar.getText().toLowerCase();
 
         try  {
@@ -111,22 +120,16 @@ public class Controller implements Initializable{
             e.printStackTrace();
         }
     }
+
+    /*
+        Add student from database using inputs from text-field
+        Return without adding student if checkInput method returns false
+     */
     public void addStudent() {
         try(Connection con = DBConnection.createConnection()) {
-
-            PreparedStatement getIdListPst = con.prepareStatement("SELECT id FROM students.student_details");
-            ResultSet rs = getIdListPst.executeQuery();
-
-            while(rs.next()){
-                idList.add(rs.getInt("id"));
-            }
-
-//          Execute query
             String addUserQuery = "INSERT INTO students.student_details (name,age,programCode,gpa) values(?,?,?,?)";
             try{
                 PreparedStatement addUserPst = con.prepareStatement(addUserQuery);
-
-
                 String name_add = name_input.getText();
                 String age_add = age_input.getText();
                 String code_add = code_input.getValue();
@@ -139,7 +142,6 @@ public class Controller implements Initializable{
                             "GPA <= 5.00");
                     return;
                 }
-
 
                 addUserPst.setString(1,name_add);
                 addUserPst.setString(2,age_add);
@@ -155,17 +157,18 @@ public class Controller implements Initializable{
             catch(Exception e){
                 e.printStackTrace();
                 JOptionPane.showMessageDialog(null,"Failed to add student");
-
             }
-
-
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
+
+    /*
+        Check input and return without editing student if checkInput method returns false
+        If checkInput method returns true : edit Student based on input
+    */
     public void editStudent(){
-        //          Execute query
 
         String name_edit = name_input.getText();
         String age_edit = age_input.getText();
@@ -179,7 +182,6 @@ public class Controller implements Initializable{
                     "GPA <= 5.00");
             return;
         }
-
 
         try (Connection con = DBConnection.createConnection()) {
 //          get id from selected row in table
@@ -200,9 +202,9 @@ public class Controller implements Initializable{
         }
 
     }
-    public void deleteStudent() {
 
-//          Execute query
+    //Delete student based on 'currentId' which is unique ID of selected row
+    public void deleteStudent() {
             String deleteStudentQuery = "DELETE FROM students.student_details WHERE id = ?";
             try (Connection con = DBConnection.createConnection()) {
                 PreparedStatement deleteStudentPst = con.prepareStatement(deleteStudentQuery);
@@ -218,6 +220,8 @@ public class Controller implements Initializable{
             }
 
     }
+
+    //Gets student data from mySQL database and updates the table to display students
     public void updateTable(){
         id_col.setCellValueFactory(new PropertyValueFactory<>("id"));
         name_col.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -225,23 +229,20 @@ public class Controller implements Initializable{
         code_col.setCellValueFactory(new PropertyValueFactory<>("code"));
         gpa_col.setCellValueFactory(new PropertyValueFactory<>("gpa"));
 
-
-
         ObservableList<Student> list = getStudents();
         table.setItems(list);
     }
+
+    //Clear text-fields after editing or adding
     public void clearInput(){
-        //clear textbox after editing / adding
         name_input.clear();
         age_input.clear();
         code_input.setValue("");
         gpa_input.clear();
 
     }
-    public boolean checkInput(String name, int age, double gpa){
-        //    Returns false when input is out of range or too many characters
-        return name.length() <= 50 && age <= 100 && !(gpa > 5.00);
-    }
+
+    //Change scene to 'login.fxml'
     public void logOut() throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("login.fxml"));
         Scene scene = new Scene(root, 700, 500);
@@ -252,6 +253,7 @@ public class Controller implements Initializable{
 
     }
 
+    //Runs when the 'student_management.fxml' is loaded
     public void initialize(URL url, ResourceBundle rb) {
 
         String[] codeList = {"CS","MED","BIO","CHEM"};

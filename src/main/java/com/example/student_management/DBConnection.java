@@ -5,8 +5,10 @@ import java.sql.DriverManager;
 
 public class DBConnection {
 
+    //Create connection object
     static Connection con;
 
+    //return connection to mySQL database
     public static Connection createConnection(){
 
         try{
@@ -14,10 +16,7 @@ public class DBConnection {
             String user="root";
             String pass="Aloywashere0";
             String url = "jdbc:mysql://127.0.0.1:3306/?user=root";
-
             con= DriverManager.getConnection(url,user,pass);
-
-
         }
         catch(Exception ex){
             ex.printStackTrace();
